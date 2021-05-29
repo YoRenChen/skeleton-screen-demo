@@ -1,10 +1,12 @@
 # Skeleton-screen-demo
 
 半自动根据页面内容生成骨架屏
-目的是不需要单独写改页面的骨架屏，根据当前页面内容布局，修改当前简化内容成为骨架容器，从而形成的骨架屏。
+> 目的是在实现页面的简单骨架屏时无需再写额外的代码。根据当前页面内容布局，把当前内容切换为骨架容器，生成对应的html。
 
-本 code 由学习参考 `page-skeleton-webpack-plugin` 为前提，目的提供学习自动化骨架屏原理，如有意可以前往观看其源码。
-构建思路参考 `page-skeleton-webpack-plugin` 和 `vue-skeleton-webpack-plugin` 两个框架
+## 前提
+构建思路基于 [page-skeleton-webpack-plugin](https://github.com/ElemeFE/page-skeleton-webpack-plugin) 和 [vue-skeleton-webpack-plugin](https://github.com/lavas-project/vue-skeleton-webpack-plugin) 两个框架所做的学习简化版。
+
+> 本 code 由学习参考 `page-skeleton-webpack-plugin` 为前提，目的提供学习自动化骨架屏原理，如有意可以前往观看其源码。
 
 ## 文档说明
 
