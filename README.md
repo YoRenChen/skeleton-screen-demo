@@ -12,7 +12,7 @@
 
 想了解该项目创建过程和思考可以参考对应的解说文档：
 
-[居于CSR的骨架屏生成](https://github.com/YoRenChen/Blog/issues/4)
+👉🏻👉🏻 [居于CSR的骨架屏生成](https://github.com/YoRenChen/Blog/issues/4)
 
 ## 核心目录结构
 
