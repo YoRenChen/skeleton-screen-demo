@@ -3,29 +3,27 @@ import { addStyle } from './styleCache'
 import addShine from './loading'
 import { CLASS_NAME_PREFEX } from '../config'
 
-function addTextMask(paragraph, {
-  textAlign,
-  lineHeight,
-  paddingBottom,
-  paddingLeft,
-  paddingRight
-}, maskWidthPercent = 0.5) {
+function addTextMask(
+  paragraph,
+  { textAlign, lineHeight, paddingBottom, paddingLeft, paddingRight },
+  maskWidthPercent = 0.5
+) {
   let left
   let right
   switch (textAlign) {
     case 'center':
       left = document.createElement('span')
       right = document.createElement('span')
-        ;[left, right].forEach(mask => {
-          Object.assign(mask.style, {
-            display: 'inline-block',
-            width: `${maskWidthPercent / 2 * 100}%`,
-            height: lineHeight,
-            background: '#fff',
-            position: 'absolute',
-            bottom: paddingBottom
-          })
+      ;[left, right].forEach(mask => {
+        Object.assign(mask.style, {
+          display: 'inline-block',
+          width: `${(maskWidthPercent / 2) * 100}%`,
+          height: lineHeight,
+          background: '#fff',
+          position: 'absolute',
+          bottom: paddingBottom
         })
+      })
       left.style.left = paddingLeft
       right.style.right = paddingRight
       paragraph.appendChild(left)
@@ -86,13 +84,14 @@ function textHandler(ele, { color }, cssUnit, decimal) {
   const position = ['fixed', 'absolute', 'flex'].find(p => p === pos) ? pos : 'relative'
   const height = ele.offsetHeight
   // Math.floor
-  const lineCount = (height - parseFloat(paddingTop, 10) - parseFloat(paddingBottom, 10)) / parseFloat(lineHeight, 10) | 0 // eslint-disable-line no-bitwise
+  const lineCount =
+    ((height - parseFloat(paddingTop, 10) - parseFloat(paddingBottom, 10)) / parseFloat(lineHeight, 10)) | 0 // eslint-disable-line no-bitwise
   let textHeightRatio = parseFloat(fontSize, 10) / parseFloat(lineHeight, 10)
   if (Number.isNaN(textHeightRatio)) {
     textHeightRatio = 1 / 1.4 // default number
   }
   /* eslint-disable no-mixed-operators */
-  const firstColorPoint = ((1 - textHeightRatio) / 2 * 100).toFixed(decimal)
+  const firstColorPoint = (((1 - textHeightRatio) / 2) * 100).toFixed(decimal)
   const secondColorPoint = (((1 - textHeightRatio) / 2 + textHeightRatio) * 100).toFixed(decimal)
   const backgroundSize = `100% ${px2relativeUtil(lineHeight, cssUnit, decimal)}`
   const className = CLASS_NAME_PREFEX + 'text-' + firstColorPoint.toString(32).replace(/\./g, '-')
@@ -127,10 +126,14 @@ function textHandler(ele, { color }, cssUnit, decimal) {
     })
     const textWidthPercent = textWidth / (width - parseInt(paddingRight, 10) - parseInt(paddingLeft, 10))
 
-    ele.style.backgroundSize = `${(textWidthPercent > 1 ? 1 : textWidthPercent) * 100}% ${px2relativeUtil(lineHeight, cssUnit, decimal)}`
+    ele.style.backgroundSize = `${(textWidthPercent > 1 ? 1 : textWidthPercent) * 100}% ${px2relativeUtil(
+      lineHeight,
+      cssUnit,
+      decimal
+    )}`
 
     if (display === 'flex') {
-      textAlign = { 'center': 'center', 'flex-end': 'right', 'flex-start': 'left' }[justifyContent]
+      textAlign = { center: 'center', 'flex-end': 'right', 'flex-start': 'left' }[justifyContent]
     }
     switch (textAlign) {
       case 'left': // do nothing
@@ -146,8 +149,8 @@ function textHandler(ele, { color }, cssUnit, decimal) {
     addShine(ele, {
       width: `${(textWidthPercent > 1 ? 1 : textWidthPercent) * 100}%`,
       top: `${firstColorPoint}%`,
-      left: `${{ 'left': 0, 'center': '50%', 'right': `calc(100% - ${width})` }[textAlign]}`,
-      transform: `translate(-${{ 'left': 0, 'center': '50%', 'right': `calc(100% - ${width})` }[textAlign]}, 0)`,
+      left: `${{ left: 0, center: '50%', right: `calc(100% - ${width})` }[textAlign]}`,
+      transform: `translate(-${{ left: 0, center: '50%', right: `calc(100% - ${width})` }[textAlign]}, 0)`,
       height: `${secondColorPoint - firstColorPoint}%`
     })
   }

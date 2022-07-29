@@ -16,9 +16,7 @@ const assetsCDN = {
     vue: 'Vue'
   },
   css: [],
-  js: [
-    '//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js'
-  ]
+  js: ['//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js']
 }
 
 // vue.config.js
@@ -37,9 +35,8 @@ const vueConfig = {
     externals: isProd ? assetsCDN.externals : {}
   },
 
-  chainWebpack: (config) => {
-    config.resolve.alias
-      .set('@$', resolve('src'))
+  chainWebpack: config => {
+    config.resolve.alias.set('@$', resolve('src'))
 
     config.plugin('html').tap(args => {
       if (process.env.NODE_ENV === 'production') {
@@ -77,8 +74,7 @@ const vueConfig = {
   css: {
     loaderOptions: {
       less: {
-        modifyVars: {
-        },
+        modifyVars: {},
         javascriptEnabled: true
       }
     }

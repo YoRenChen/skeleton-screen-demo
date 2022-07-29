@@ -23,7 +23,7 @@ var Skeleton = (function (exports) {
   const styleCache = new Map();
 
   // some common styles
-  const shapeStyle = (shape) => {
+  const shapeStyle = shape => {
     const selector = `.${CLASS_NAME_PREFEX + shape}`;
     const rule = `{
     border-radius: ${shape === 'rect' ? '0' : '50%'};
@@ -270,29 +270,27 @@ var Skeleton = (function (exports) {
     elementReplace2Span(ele, color);
   }
 
-  function addTextMask(paragraph, {
-    textAlign,
-    lineHeight,
-    paddingBottom,
-    paddingLeft,
-    paddingRight
-  }, maskWidthPercent = 0.5) {
+  function addTextMask(
+    paragraph,
+    { textAlign, lineHeight, paddingBottom, paddingLeft, paddingRight },
+    maskWidthPercent = 0.5
+  ) {
     let left;
     let right;
     switch (textAlign) {
       case 'center':
         left = document.createElement('span');
         right = document.createElement('span')
-          ;[left, right].forEach(mask => {
-            Object.assign(mask.style, {
-              display: 'inline-block',
-              width: `${maskWidthPercent / 2 * 100}%`,
-              height: lineHeight,
-              background: '#fff',
-              position: 'absolute',
-              bottom: paddingBottom
-            });
+        ;[left, right].forEach(mask => {
+          Object.assign(mask.style, {
+            display: 'inline-block',
+            width: `${(maskWidthPercent / 2) * 100}%`,
+            height: lineHeight,
+            background: '#fff',
+            position: 'absolute',
+            bottom: paddingBottom
           });
+        });
         left.style.left = paddingLeft;
         right.style.right = paddingRight;
         paragraph.appendChild(left);
@@ -353,13 +351,14 @@ var Skeleton = (function (exports) {
     const position = ['fixed', 'absolute', 'flex'].find(p => p === pos) ? pos : 'relative';
     const height = ele.offsetHeight;
     // Math.floor
-    const lineCount = (height - parseFloat(paddingTop, 10) - parseFloat(paddingBottom, 10)) / parseFloat(lineHeight, 10) | 0; // eslint-disable-line no-bitwise
+    const lineCount =
+      ((height - parseFloat(paddingTop, 10) - parseFloat(paddingBottom, 10)) / parseFloat(lineHeight, 10)) | 0; // eslint-disable-line no-bitwise
     let textHeightRatio = parseFloat(fontSize, 10) / parseFloat(lineHeight, 10);
     if (Number.isNaN(textHeightRatio)) {
       textHeightRatio = 1 / 1.4; // default number
     }
     /* eslint-disable no-mixed-operators */
-    const firstColorPoint = ((1 - textHeightRatio) / 2 * 100).toFixed(decimal);
+    const firstColorPoint = (((1 - textHeightRatio) / 2) * 100).toFixed(decimal);
     const secondColorPoint = (((1 - textHeightRatio) / 2 + textHeightRatio) * 100).toFixed(decimal);
     const backgroundSize = `100% ${px2relativeUtil(lineHeight, cssUnit, decimal)}`;
     const className = CLASS_NAME_PREFEX + 'text-' + firstColorPoint.toString(32).replace(/\./g, '-');
@@ -394,10 +393,14 @@ var Skeleton = (function (exports) {
       });
       const textWidthPercent = textWidth / (width - parseInt(paddingRight, 10) - parseInt(paddingLeft, 10));
 
-      ele.style.backgroundSize = `${(textWidthPercent > 1 ? 1 : textWidthPercent) * 100}% ${px2relativeUtil(lineHeight, cssUnit, decimal)}`;
+      ele.style.backgroundSize = `${(textWidthPercent > 1 ? 1 : textWidthPercent) * 100}% ${px2relativeUtil(
+      lineHeight,
+      cssUnit,
+      decimal
+    )}`;
 
       if (display === 'flex') {
-        textAlign = { 'center': 'center', 'flex-end': 'right', 'flex-start': 'left' }[justifyContent];
+        textAlign = { center: 'center', 'flex-end': 'right', 'flex-start': 'left' }[justifyContent];
       }
       switch (textAlign) {
         case 'left': // do nothing
@@ -413,8 +416,8 @@ var Skeleton = (function (exports) {
       addShine(ele, {
         width: `${(textWidthPercent > 1 ? 1 : textWidthPercent) * 100}%`,
         top: `${firstColorPoint}%`,
-        left: `${{ 'left': 0, 'center': '50%', 'right': `calc(100% - ${width})` }[textAlign]}`,
-        transform: `translate(-${{ 'left': 0, 'center': '50%', 'right': `calc(100% - ${width})` }[textAlign]}, 0)`,
+        left: `${{ left: 0, center: '50%', right: `calc(100% - ${width})` }[textAlign]}`,
+        transform: `translate(-${{ left: 0, center: '50%', right: `calc(100% - ${width})` }[textAlign]}, 0)`,
         height: `${secondColorPoint - firstColorPoint}%`
       });
     }
@@ -479,7 +482,7 @@ var Skeleton = (function (exports) {
       remove.push(CONSOLE_SELECTOR, ...PRE_REMOVE_TAGS);
       toRemove.push(...$$(remove.join(',')));
     }
-   (function preTraverse(ele) {
+  (function preTraverse(ele) {
       const styles = getComputedStyle$1(ele);
       const hasPseudoEle = checkHasPseudoEle(ele);
       if (!inViewPort(ele) || DISPLAY_NONE.test(ele.getAttribute('style'))) {
@@ -491,7 +494,8 @@ var Skeleton = (function (exports) {
         return removeElement(ele)
       }
 
-      if (~grayEle.indexOf(ele)) { // eslint-disable-line no-bitwise
+      if (~grayEle.indexOf(ele)) {
+        // eslint-disable-line no-bitwise
         return grayBlocks.push(ele)
       }
       if (~excludesEle.indexOf(ele)) return false // eslint-disable-line no-bitwise
@@ -543,8 +547,7 @@ var Skeleton = (function (exports) {
       ) {
         return buttons.push(ele)
       }
-      if (ele.childNodes &&
-        ele.childNodes.length === 1) ;
+      if (ele.childNodes && ele.childNodes.length === 1) ;
       if (
         ele.childNodes &&
         ele.childNodes.length > 0 &&
@@ -557,7 +560,7 @@ var Skeleton = (function (exports) {
       if (isBackgroundColorDefault(styles.backgroundColor)) {
         return bgBlocks.push(ele)
       }
-    }(rootElement));
+    })(rootElement);
 
     svgs.forEach(e => svgHandler(e, svg));
     texts.forEach(e => textHandler(e, text, cssUnit, decimal));
@@ -579,9 +582,7 @@ var Skeleton = (function (exports) {
 
   // 构建骨架
   function genSkeleton(options) {
-    const {
-      hide
-    } = options;
+    const { hide } = options;
     /**
      * before walk
      */
@@ -601,14 +602,14 @@ var Skeleton = (function (exports) {
     addShineStyle();
 
     let rules = '';
-
     for (const [selector, rule] of styleCache) {
       rules += `${selector} ${rule}\n`;
     }
 
     const styleEle = document.createElement('style');
 
-    if (!window.createPopup) { // For Safari
+    if (!window.createPopup) {
+      // For Safari
       styleEle.appendChild(document.createTextNode(''));
     }
     styleEle.innerHTML = rules;

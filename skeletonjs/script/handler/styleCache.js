@@ -7,7 +7,7 @@ import { CLASS_NAME_PREFEX } from '../config'
 const styleCache = new Map()
 
 // some common styles
-export const shapeStyle = (shape) => {
+export const shapeStyle = shape => {
   const selector = `.${CLASS_NAME_PREFEX + shape}`
   const rule = `{
     border-radius: ${shape === 'rect' ? '0' : '50%'};

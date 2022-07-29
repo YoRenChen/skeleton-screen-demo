@@ -27,7 +27,7 @@ function createLog(options) {
   })
 }
 
-const getCleanedShellHtml = (html) => {
+const getCleanedShellHtml = html => {
   const STYLE_REG = /<style>[\s\S]+?<\/style>/
   const BODY_REG = /<body>([\s\S]+?)<\/body>/
   const css = STYLE_REG.exec(html)[0]
@@ -41,19 +41,21 @@ function htmlMinify(html, options) {
 
 async function writeShell(routesData, options, log) {
   const { pathname, minify: minOptions } = options
-  return Promise.all(Object.keys(routesData).map(async (route) => {
-    const html = routesData[route].html
-    const minifiedHtml = htmlMinify(getCleanedShellHtml(html), minOptions)
-    const trimedRoute = route.replace(/\//g, '')
-    const filePath = path.join(pathname, trimedRoute ? `${trimedRoute}.html` : 'index.html')
-    await fse.ensureDir(pathname)
-    await promisify(fse.writeFile)(filePath, minifiedHtml, 'utf-8')
-    return Promise.resolve()
-  }))
+  return Promise.all(
+    Object.keys(routesData).map(async route => {
+      const html = routesData[route].html
+      const minifiedHtml = htmlMinify(getCleanedShellHtml(html), minOptions)
+      const trimedRoute = route.replace(/\//g, '')
+      const filePath = path.join(pathname, trimedRoute ? `${trimedRoute}.html` : 'index.html')
+      await fse.ensureDir(pathname)
+      await promisify(fse.writeFile)(filePath, minifiedHtml, 'utf-8')
+      return Promise.resolve()
+    })
+  )
 }
 
 function sleep(duration) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(resolve, duration)
   })
 }
@@ -98,7 +100,7 @@ function addScriptTag(source, src, port) {
  * @param {string} css
  * @return {string}
  */
-const collectImportantComments = (css) => {
+const collectImportantComments = css => {
   const once = new Set()
   const cleaned = css.replace(/(\/\*![\s\S]*?\*\/)\n*/gm, (match, p1) => {
     once.add(p1)
@@ -111,21 +113,24 @@ const collectImportantComments = (css) => {
 
 const outputSkeletonScreen = async (originHtml, options, log) => {
   const { pathname, staticDir, routes } = options
-  return Promise.all(routes.map(async (route) => {
-    const trimedRoute = route.replace(/\//g, '')
-    const filePath = path.join(pathname, trimedRoute ? `${trimedRoute}.html` : 'index.html')
-    if (await promisify(fse.accessSync)(filePath)) { }
-    const html = await promisify(fse.readFile)(filePath, 'utf-8')
-    const finalHtml = originHtml.replace('<!-- shell -->', html)
-    const outputDir = path.join(staticDir, route)
-    const outputFile = path.join(outputDir, 'index.html')
-    await fse.ensureDir(outputDir)
-    await promisify(fse.writeFile)(outputFile, finalHtml, 'utf-8')
-    return Promise.resolve()
-  }))
+  return Promise.all(
+    routes.map(async route => {
+      const trimedRoute = route.replace(/\//g, '')
+      const filePath = path.join(pathname, trimedRoute ? `${trimedRoute}.html` : 'index.html')
+      if (await promisify(fse.accessSync)(filePath)) {
+      }
+      const html = await promisify(fse.readFile)(filePath, 'utf-8')
+      const finalHtml = originHtml.replace('<!-- shell -->', html)
+      const outputDir = path.join(staticDir, route)
+      const outputFile = path.join(outputDir, 'index.html')
+      await fse.ensureDir(outputDir)
+      await promisify(fse.writeFile)(outputFile, finalHtml, 'utf-8')
+      return Promise.resolve()
+    })
+  )
 }
 
-const addDprAndFontSize = (html) => {
+const addDprAndFontSize = html => {
   const json = html2json(html)
   const rootElement = json.child.filter(c => c.tag === 'html')[0]
   const oriAttr = rootElement.attr
@@ -147,7 +152,8 @@ const addDprAndFontSize = (html) => {
 
 const getLocalIpAddress = () => {
   const interfaces = os.networkInterfaces()
-  for (const devName in interfaces) { // eslint-disable-line guard-for-in
+  for (const devName in interfaces) {
+    // eslint-disable-line guard-for-in
     const iface = interfaces[devName]
     for (const alias of iface) {
       if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {

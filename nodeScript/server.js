@@ -19,13 +19,14 @@ app.use('*.ico', express.static(resolve(__dirname, pathDir)))
 
 // // 路由请求
 app.get('*', (req, res) => {
-    res.setHeader('Content-Type', 'text/html')
-    const reqUrl = req.url === '/' ? 'index' : req.url.replace(/\//g, '')
+  res.setHeader('Content-Type', 'text/html')
+  res.setHeader('Cache-Control', 'no-store')
+  const reqUrl = req.url === '/' ? 'index' : req.url.replace(/\//g, '')
 
-    const resHtml = (shellFiles.includes(reqUrl))
-        ? tempHtml.replace('<!-- shell -->', fs.readFileSync(resolve(__dirname, `../dist/shell/${reqUrl}.html`), 'utf-8'))
-        : tempHtml
-    res.status(200)
-    res.send(resHtml)
+  const resHtml = shellFiles.includes(reqUrl)
+    ? tempHtml.replace('<!-- shell -->', fs.readFileSync(resolve(__dirname, `../dist/shell/${reqUrl}.html`), 'utf-8'))
+    : tempHtml
+  res.status(200)
+  res.send(resHtml)
 })
 module.exports = app

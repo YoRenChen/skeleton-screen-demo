@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start:server": "node ./ske && nodemon  nodeScript/index",
+    "server": "nodemon  nodeScript/index",
+    "start": "node ./ske && vue-cli-service build && nodemon  nodeScript/index",
     "ske": "node ./ske",
-    "serve": "vue-cli-service serve"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
   },
   "nodemonConfig": {
     "ignore": [
@@ -45,8 +47,9 @@
     "less-plugin-npm-import": "^2.1.0",
     "lodash": "^4.17.21",
     "memory-fs": "^0.5.0",
+    "nodemon": "^2.0.19",
     "opn": "^6.0.0",
-    "puppeteer": "^8.0.0",
+    "puppeteer": "^15.5.0",
     "qrcode": "^1.4.4",
     "sockjs": "^0.3.21",
     "sockjs-client": "^1.5.1",

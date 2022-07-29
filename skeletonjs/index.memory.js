@@ -29,7 +29,6 @@ class SkeletonMemoryHandle extends EventEmitter {
     await this.skeleton.destroy()
     this.log.info('-----  生成结束  ------')
     process.exit()
-    // exit()
   }
 
   async getSkeletonScreens(origin) {
@@ -47,7 +46,7 @@ class SkeletonMemoryHandle extends EventEmitter {
         }
       }
     } catch (err) {
-      console.log('generate skeleton screen failed.')
+      console.log('generate skeleton screen failed.', err)
     }
   }
 

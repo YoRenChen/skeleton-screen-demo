@@ -1,11 +1,27 @@
 import {
-  $$, $, getComputedStyle, checkHasPseudoEle, inViewPort, checkHasBorder,
-  isBase64Img, transparent, checkHasTextDecoration, removeElement, setOpacity,
+  $$,
+  $,
+  getComputedStyle,
+  checkHasPseudoEle,
+  inViewPort,
+  checkHasBorder,
+  isBase64Img,
+  transparent,
+  checkHasTextDecoration,
+  removeElement,
+  setOpacity,
   isBackgroundColorDefault
 } from './util'
 import {
-  DISPLAY_NONE, Node, EXT_REG, TRANSPARENT, GRADIENT_REG,
-  PRE_REMOVE_TAGS, MOCK_TEXT_ID, AFTER_REMOVE_TAGS, CONSOLE_SELECTOR
+  DISPLAY_NONE,
+  Node,
+  EXT_REG,
+  TRANSPARENT,
+  GRADIENT_REG,
+  PRE_REMOVE_TAGS,
+  MOCK_TEXT_ID,
+  AFTER_REMOVE_TAGS,
+  CONSOLE_SELECTOR
 } from './config'
 import * as handler from './handler/index.js'
 import addShineStyle from './handler/animation.js'
@@ -33,7 +49,7 @@ function traverse(options) {
     toRemove.push(...$$(remove.join(',')))
   }
 
-  ; (function preTraverse(ele) {
+  ;(function preTraverse(ele) {
     const styles = getComputedStyle(ele)
     const hasPseudoEle = checkHasPseudoEle(ele)
     if (!inViewPort(ele) || DISPLAY_NONE.test(ele.getAttribute('style'))) {
@@ -45,7 +61,8 @@ function traverse(options) {
       return removeElement(ele)
     }
 
-    if (~grayEle.indexOf(ele)) { // eslint-disable-line no-bitwise
+    if (~grayEle.indexOf(ele)) {
+      // eslint-disable-line no-bitwise
       return grayBlocks.push(ele)
     }
     if (~excludesEle.indexOf(ele)) return false // eslint-disable-line no-bitwise
@@ -97,8 +114,7 @@ function traverse(options) {
     ) {
       return buttons.push(ele)
     }
-    if (ele.childNodes &&
-      ele.childNodes.length === 1) {
+    if (ele.childNodes && ele.childNodes.length === 1) {
     }
     if (
       ele.childNodes &&
@@ -112,7 +128,7 @@ function traverse(options) {
     if (isBackgroundColorDefault(styles.backgroundColor)) {
       return bgBlocks.push(ele)
     }
-  }(rootElement))
+  })(rootElement)
 
   svgs.forEach(e => handler.svg(e, svg, cssUnit, decimal))
   texts.forEach(e => handler.text(e, text, cssUnit, decimal))
@@ -134,9 +150,7 @@ function traverse(options) {
 
 // 构建骨架
 function genSkeleton(options) {
-  const {
-    hide
-  } = options
+  const { hide } = options
   /**
    * before walk
    */
@@ -156,14 +170,14 @@ function genSkeleton(options) {
   addShineStyle()
 
   let rules = ''
-
   for (const [selector, rule] of styleCache) {
     rules += `${selector} ${rule}\n`
   }
 
   const styleEle = document.createElement('style')
 
-  if (!window.createPopup) { // For Safari
+  if (!window.createPopup) {
+    // For Safari
     styleEle.appendChild(document.createTextNode(''))
   }
   styleEle.innerHTML = rules
@@ -193,7 +207,4 @@ function getHtmlAndStyle() {
   }
 }
 
-export {
-  genSkeleton,
-  getHtmlAndStyle
-}
+export { genSkeleton, getHtmlAndStyle }
