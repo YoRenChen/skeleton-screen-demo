@@ -33,7 +33,7 @@
 
 启动：
 
-1. npx serve
+1. npx run serve
 
 在确保`npx serve`运行情况下再执行下面命令
 
