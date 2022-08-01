@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const GitRevision = new GitRevisionPlugin()
 const buildDate = JSON.stringify(new Date().toLocaleString())
+const SkePlugin = require('./SkePlugin')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -29,6 +30,9 @@ const vueConfig = {
         APP_VERSION: `"${require('./package.json').version}"`,
         GIT_HASH: JSON.stringify(GitRevision.version()),
         BUILD_DATE: buildDate
+      }),
+      new SkePlugin({
+        routes: ['/', '/about/index']
       })
     ],
     // if prod, add externals

@@ -20,6 +20,8 @@ class SkeletonMemoryHandle extends EventEmitter {
     this.routesData = null
     this.origin = `http://${this.host}:${this.options.port}`
     this.log = createLog(options)
+    this.fulfilled = false
+    this.fulfillFn = options.fulfillFn
   }
 
   async init() {
@@ -28,7 +30,13 @@ class SkeletonMemoryHandle extends EventEmitter {
     if (this.routesData) await this.writeShellFile()
     await this.skeleton.destroy()
     this.log.info('-----  生成结束  ------')
-    process.exit()
+    this.fulfillHandle()
+  }
+
+  fulfillHandle() {
+    this.fulfilled = true
+    this.fulfillFn(this.fulfilled)
+    // process.exit()
   }
 
   async getSkeletonScreens(origin) {
